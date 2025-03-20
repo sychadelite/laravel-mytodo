@@ -50,12 +50,12 @@ APP_KEY=
 APP_DEBUG=true
 APP_URL=http://localhost
 
-DB_CONNECTION=mysql
-DB_HOST=db # Use 'db' because MySQL runs in a separate Docker container, not locally
-DB_PORT=3306
+DB_CONNECTION=pgsql
+DB_HOST=db # Use 'db' because PostgreSQL runs in a separate Docker container, not locally
+DB_PORT=5432
 DB_DATABASE=todo_app
-DB_USERNAME=root
-DB_PASSWORD=root
+DB_USERNAME=postgres
+DB_PASSWORD=
 
 PYTHON_SERVICE_URL=http://laravel_python:5000
 ```
