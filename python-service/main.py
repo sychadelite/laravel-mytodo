@@ -1,22 +1,27 @@
-from flask import Flask, jsonify, request, abort
-import psycopg2
-import logging
 import os
+import logging
+import psycopg2
+from flask import Flask, jsonify, request, abort
+from dotenv import load_dotenv
+
+# Load .env file
+dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.env"))
+load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
-# Connect to PostgreSQL
+# Connect to database
 def get_db_connection():
     try:
         conn = psycopg2.connect(
-            dbname=os.getenv("POSTGRES_DB", "postgres"),
-            user=os.getenv("POSTGRES_USER", "postgres"),
-            password=os.getenv("POSTGRES_PASSWORD", ""),
-            host=os.getenv("POSTGRES_HOST", "localhost"),
-            port=os.getenv("POSTGRES_PORT", "5432")
+            dbname=os.getenv("DB_DATABASE", "postgres"),
+            user=os.getenv("DB_USERNAME", "postgres"),
+            password=os.getenv("DB_PASSWORD", ""),
+            host=os.getenv("DB_HOST", "localhost"),
+            port=os.getenv("DB_PORT", "5432")
         )
         logging.info("Connected to the database successfully!")
         return conn
@@ -45,6 +50,15 @@ def fetch_tasks(query, params=None):
     except Exception as e:
         logging.error(f"Error executing query: {e}")
         raise
+
+# Base endpoint
+@app.route('/', methods=['GET'])
+def base():
+    data = {
+        "user": "anonymous"
+    }
+
+    return jsonify({"status": "true", "data": data}), 200
 
 # Health check endpoint
 @app.route('/health', methods=['GET'])
@@ -85,3 +99,7 @@ def get_tasks():
     except Exception as e:
         logging.error(f"Error fetching tasks: {e}")
         return jsonify({"error": str(e)}), 500
+
+# Run locally
+if __name__ == "__main__":
+    app.run(debug=True)
