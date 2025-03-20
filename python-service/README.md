@@ -17,13 +17,14 @@ This is the Python service for the project. It provides a Flask-based API to int
 If you haven't already, clone the project repository:
 
 ```bash
-git clone <https://github.com your-username/your-repo.git> cd your-repo
+git clone https://github.com/sychadelite/laravel-mytodo.git
+cd laravel-mytodo
 ```
 
 ### **2\. Navigate to the Python Service Directory**
 
 ```bash
-cd python-app
+cd python-service
 ```
 
 ### **3\. Set Up a Virtual Environment**
@@ -60,9 +61,9 @@ Ensure the PostgreSQL database is running and update the connection details in m
 
 ```python
 conn = psycopg2.connect(
-    dbname="todo_app",
+    dbname="postgres",
     user="postgres",
-    password="secret",
+    password="secretpassword",
     host="localhost",
     port="5432"
 )
@@ -73,9 +74,9 @@ conn = psycopg2.connect(
 If your project uses environment variables, create a .env file in the python-app directory:
 
 ```env
-DB_NAME=todo_app
+DB_NAME=postgres
 DB_USER=postgres
-DB_PASSWORD=secret
+DB_PASSWORD=secretpassword
 DB_HOST=localhost
 DB_PORT=5432
 ```
