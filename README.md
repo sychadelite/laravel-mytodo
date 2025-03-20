@@ -1,11 +1,145 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center">
+  <a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+  </a>
+</p>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://github.com/laravel/framework/actions">
+    <img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status">
+  </a>
+  <a href="https://packagist.org/packages/laravel/framework">
+    <img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads">
+  </a>
+  <a href="https://packagist.org/packages/laravel/framework">
+    <img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version">
+  </a>
+  <a href="https://packagist.org/packages/laravel/framework">
+    <img src="https://img.shields.io/packagist/l/laravel/framework" alt="License">
+  </a>
 </p>
+
+# Laravel 12 with Python API - Docker Setup
+
+This guide walks you through setting up your Laravel 12 mytodo application with a Python API using Docker & Docker Compose.
+
+## Prerequisites
+Ensure you have the following installed on your system:
+- Docker (https://docs.docker.com/get-docker/)
+- Docker Compose (https://docs.docker.com/compose/install/)
+
+## Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/sychadelite/laravel-mytodo.git
+cd laravel-mytodo
+```
+
+## Step 2: Set Up Environment Variables
+Create a .env file from .env.example and configure database settings:
+
+```bash
+cp .env.example .env
+```
+
+Update the .env file:
+
+```env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=db # Use 'db' because MySQL runs in a separate Docker container, not locally
+DB_PORT=3306
+DB_DATABASE=todo_app
+DB_USERNAME=root
+DB_PASSWORD=root
+
+PYTHON_SERVICE_URL=http://laravel_python:5000
+```
+
+Generate an application key:
+
+```bash
+docker-compose run --rm app php artisan key:generate
+```
+
+## Step 3: Build and Start Containers
+Run the following command to build and start the containers:
+
+```bash
+docker-compose up -d --build
+```
+
+This will spin up the following containers:
+- Laravel App (app)
+- MySQL Database (db)
+- Python API Service (python-api)
+
+## Step 4: Install Dependencies
+Run Laravel's dependency installation inside the container:
+
+```bash
+docker-compose exec laravel_app composer install
+```
+
+Run database migrations:
+
+```bash
+docker-compose exec laravel_app php artisan migrate --seed
+```
+
+## Step 5: Access the Application
+- Laravel API: http://localhost:8000
+- Python API: http://localhost:5000
+- MySQL Database: localhost:3306 (Username: root, Password: root)
+
+To check running containers:
+
+```bash
+docker ps
+```
+
+## Step 6: Stopping and Restarting Containers
+To stop the containers:
+
+```bash
+docker-compose down
+```
+
+To restart them:
+
+```bash
+docker-compose up -d
+```
+
+## Step 7: Running Tests
+You can run Laravel tests inside the container:
+
+```bash
+docker-compose exec laravel_app php artisan test
+```
+
+## Troubleshooting
+- If containers fail to start, check logs:
+  
+```bash
+  docker-compose logs app
+```
+- If database issues arise, try:
+  
+```bash
+  docker-compose exec laravel_app php artisan migrate:fresh --seed
+```
+- If you get permission errors, try:
+  
+```bash
+  sudo chown -R www-data:www-data storage bootstrap/cache
+```
+
+You're all set! Start building your Laravel + Python-powered Todo App!
 
 ## About Laravel
 
