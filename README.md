@@ -82,13 +82,13 @@ This will spin up the following containers:
 Run Laravel's dependency installation inside the container:
 
 ```bash
-docker-compose exec laravel_app composer install
+docker exec -it laravel_app composer install
 ```
 
 Run database migrations:
 
 ```bash
-docker-compose exec laravel_app php artisan migrate --seed
+docker exec -it laravel_app php artisan migrate --seed
 ```
 
 ## Step 5: Access the Application
@@ -119,7 +119,7 @@ docker-compose up -d
 You can run Laravel tests inside the container:
 
 ```bash
-docker-compose exec laravel_app php artisan test
+docker exec -it laravel_app php artisan test
 ```
 
 ## Troubleshooting
@@ -131,7 +131,7 @@ docker-compose exec laravel_app php artisan test
 - If database issues arise, try:
   
 ```bash
-  docker-compose exec laravel_app php artisan migrate:fresh --seed
+  docker exec -it laravel_app php artisan migrate:fresh --seed
 ```
 - If you get permission errors, try:
   
