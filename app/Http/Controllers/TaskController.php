@@ -128,9 +128,7 @@ class TaskController extends Controller
             }
 
             // Make a GET request to the Python service with optional query parameters
-            $response = Http::retry(3, 100) // Retry 3 times with 100ms delay
-                ->timeout(10) // Set a timeout of 10 seconds
-                ->get(env('PYTHON_SERVICE_URL') . '/tasks', $queryParams);
+            $response = Http::get(env('PYTHON_SERVICE_URL') . '/tasks', $queryParams);
 
             // Check if the request was successful
             if ($response->successful()) {
