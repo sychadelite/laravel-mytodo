@@ -15,6 +15,14 @@ services:
       - db
     env_file:
       - .env
+  
+  node:
+    image: node:20  # Use latest LTS version
+    container_name: laravel_node
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    command: tail -f /dev/null
 
   db:
     image: postgres:17
