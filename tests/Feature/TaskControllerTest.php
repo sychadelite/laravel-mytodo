@@ -19,7 +19,7 @@ class TaskControllerTest extends TestCase
     {
         // Mock the HTTP response for all tasks
         Http::fake([
-            'http://localhost:5000/tasks' => Http::response([
+            env('PYTHON_SERVICE_URL', 'http://localhost:5000') . '/tasks' => Http::response([
                 'data' => [
                     [
                         'id' => 1,
