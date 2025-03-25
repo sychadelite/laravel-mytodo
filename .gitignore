@@ -22,3 +22,4 @@ yarn-error.log
 /.vscode
 /.zed
 .env:Zone.Identifier
+.envZone.Identifier
